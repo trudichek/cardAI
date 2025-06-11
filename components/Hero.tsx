@@ -3,41 +3,44 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Sparkles } from "lucide-react"
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
+import { Card, CardContent } from "@/components/ui/card"
 
-const samplePostcards = [
+const styleOccasionCombos = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
-    title: "Dreamy Landscape",
+    style: "Water-colour",
+    occasion: "Birthday",
+    image: "https://source.unsplash.com/random/640x400?watercolor,birthday",
   },
   {
     id: 2,
-    image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=300&fit=crop",
-    title: "Abstract Art",
+    style: "Cartoon",
+    occasion: "Congratulations",
+    image: "https://source.unsplash.com/random/640x400?cartoon,congratulations",
   },
   {
     id: 3,
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop",
-    title: "Mountain Vista",
+    style: "Minimalist",
+    occasion: "Thank-You",
+    image: "https://source.unsplash.com/random/640x400?minimalist,thank-you",
   },
   {
     id: 4,
-    image: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=300&fit=crop",
-    title: "Ocean Waves",
+    style: "Vintage",
+    occasion: "Farewell",
+    image: "https://source.unsplash.com/random/640x400?vintage,farewell",
   },
 ]
 
+const scrollToCatalogue = () => {
+  const catalogueSection = document.querySelector("#products")
+  if (catalogueSection) {
+    catalogueSection.scrollIntoView({ behavior: "smooth" })
+  }
+}
+
 export default function Hero() {
-  const [currentSlide, setCurrentSlide] = useState(0)
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % samplePostcards.length)
-    }, 3000)
-    return () => clearInterval(timer)
-  }, [])
-
   return (
     <section className="relative overflow-hidden py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -48,70 +51,81 @@ export default function Hero() {
           </div>
 
           <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6">
-            Turn ideas into{" "}
+            Create a unique{" "}
             <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
-              beautiful postcards
+              AI postcard
             </span>{" "}
-            with AI
+            & we'll deliver it for you
           </h1>
 
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-            Create personalized postcards that capture your imagination. Our AI transforms your ideas into stunning
-            artwork, printed on premium paper and delivered across the Netherlands in just 5 days.
-          </p>
+          <div className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8 space-y-2">
+            <p>Design a one-of-a-kind postcard in seconds.</p>
+            <p>
+              We'll print it or send a high-res digital copy <strong>free</strong> via e-mail.
+            </p>
+          </div>
 
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            Start Creating
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              Start Creating
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={scrollToCatalogue}
+              className="px-8 py-4 text-lg rounded-full border-2 border-purple-200 hover:border-purple-300 dark:border-purple-700 dark:hover:border-purple-600"
+            >
+              See Examples
+            </Button>
+          </div>
         </div>
 
-        {/* Postcard Carousel */}
+        {/* Style + Occasion Carousel */}
         <div className="relative max-w-4xl mx-auto">
-          <div className="flex justify-center items-center space-x-4 overflow-hidden">
-            {samplePostcards.map((postcard, index) => (
-              <div
-                key={postcard.id}
-                className={`transition-all duration-500 transform ${
-                  index === currentSlide
-                    ? "scale-110 z-10 opacity-100"
-                    : index === (currentSlide + 1) % samplePostcards.length ||
-                        index === (currentSlide - 1 + samplePostcards.length) % samplePostcards.length
-                      ? "scale-90 opacity-70"
-                      : "scale-75 opacity-40"
-                }`}
-              >
-                <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-2xl">
-                  <Image
-                    src={postcard.image || "/placeholder.svg"}
-                    alt={postcard.title}
-                    width={300}
-                    height={200}
-                    className="rounded-xl object-cover"
-                  />
-                  <p className="text-center mt-3 font-medium text-gray-700 dark:text-gray-300">{postcard.title}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Carousel Indicators */}
-          <div className="flex justify-center mt-8 space-x-2">
-            {samplePostcards.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentSlide
-                    ? "bg-purple-600 scale-125"
-                    : "bg-gray-300 dark:bg-gray-600 hover:bg-purple-400"
-                }`}
-              />
-            ))}
-          </div>
+          <Carousel className="w-full">
+            <CarouselContent>
+              {styleOccasionCombos.map((combo) => (
+                <CarouselItem key={combo.id} className="md:basis-1/2 lg:basis-1/3">
+                  <Card className="bg-white dark:bg-gray-800 shadow-2xl border-0 overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="relative">
+                        <Image
+                          src={combo.image || "/placeholder.svg"}
+                          alt={`${combo.style} ${combo.occasion} postcard`}
+                          width={640}
+                          height={400}
+                          className="w-full h-48 object-cover"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                        <div className="absolute bottom-4 left-4 right-4">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-white font-semibold text-lg">{combo.style}</p>
+                              <p className="text-white/80 text-sm">{combo.occasion}</p>
+                            </div>
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              onClick={scrollToCatalogue}
+                              className="bg-white/90 hover:bg-white text-gray-900 text-xs"
+                            >
+                              Try this style
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-4" />
+            <CarouselNext className="right-4" />
+          </Carousel>
         </div>
       </div>
     </section>

@@ -7,6 +7,7 @@ import PricingTokens from "@/components/PricingTokens"
 import FAQ from "@/components/FAQ"
 import Footer from "@/components/Footer"
 import GDPRBanner from "@/components/GDPRBanner"
+import ExampleScenario from "@/components/ExampleScenario"
 
 export const metadata: Metadata = {
   title: "Postcard-AI | Turn Ideas into Beautiful AI-Generated Postcards",
@@ -25,6 +26,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-indigo-900/20">
       <Hero />
       <HowItWorks />
+      <ExampleScenario />
       <ProductCatalogue />
       <Testimonials />
       <PricingTokens />
